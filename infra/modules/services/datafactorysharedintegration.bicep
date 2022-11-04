@@ -17,8 +17,8 @@ param purviewManagedStorageId string = ''
 param purviewManagedEventHubId string = ''
 param storageRawId string
 param storageEnrichedCuratedId string
-param databricks001Id string
-param databricks001WorkspaceUrl string
+// param databricks001Id string
+// param databricks001WorkspaceUrl string
 param keyVault001Id string
 param sqlServer001Id string
 param sqlDatabase001Name string
@@ -26,7 +26,7 @@ param sqlDatabase001Name string
 // Variables
 var storageRawName = length(split(storageRawId, '/')) >= 9 ? last(split(storageRawId, '/')) : 'incorrectSegmentLength'
 var storageEnrichedCuratedName = length(split(storageEnrichedCuratedId, '/')) >= 9 ? last(split(storageEnrichedCuratedId, '/')) : 'incorrectSegmentLength'
-var databricks001Name = length(split(databricks001Id, '/')) >= 9 ? last(split(databricks001Id, '/')) : 'incorrectSegmentLength'
+// var databricks001Name = length(split(databricks001Id, '/')) >= 9 ? last(split(databricks001Id, '/')) : 'incorrectSegmentLength'
 var keyVault001Name = length(split(keyVault001Id, '/')) >= 9 ? last(split(keyVault001Id, '/')) : 'incorrectSegmentLength'
 var sqlServer001Name = length(split(sqlServer001Id, '/')) >= 9 ? last(split(sqlServer001Id, '/')) : 'incorrectSegmentLength'
 var datafactoryDefaultManagedVnetIntegrationRuntimeName = 'AutoResolveIntegrationRuntime'
@@ -320,50 +320,50 @@ resource datafactoryStorageEnrichedCuratedLinkedService 'Microsoft.DataFactory/f
   }
 }
 
-resource datafactoryDatabricksLinkedService 'Microsoft.DataFactory/factories/linkedservices@2018-06-01' = {
-  parent: datafactory
-  name: replace(databricks001Name, '-', '')
-  properties: {
-    type: 'AzureDatabricks'
-    annotations: []
-    connectVia: {
-      type: 'IntegrationRuntimeReference'
-      referenceName: datafactoryManagedIntegrationRuntime001.name
-      parameters: {}
-    }
-    description: 'Azure Databricks Compute for Data Engineering'
-    parameters: {
-      DatabricksClusterType: {
-        type: 'String'
-        defaultValue: 'Standard_DS3_v2'
-      }
-      DatabricksAutoscale: {
-        type: 'String'
-        defaultValue: '1:15'
-      }
-      DatabrickClusterVersion: {
-        type: 'String'
-        defaultValue: '7.3.x-scala2.12'
-      }
-    }
-    typeProperties: {
-      authentication: 'MSI'
-      domain: 'https://${databricks001WorkspaceUrl}'
-      newClusterCustomTags: {
-        costCenter: 'ABCDE-12345'
-      }
-      newClusterDriverNodeType: '@linkedService().DatabricksClusterType'
-      newClusterNodeType: '@linkedService().DatabricksClusterType'
-      newClusterNumOfWorker: '@linkedService().DatabricksAutoscale'
-      newClusterSparkEnvVars: {
-        PYSPARK_PYTHON: '/databricks/python3/bin/python3'
-      }
-      newClusterVersion: '@linkedService().DatabrickClusterVersion'
-      // policyId: ''  // Uncomment to set the default cluster policy ID for jobs running on the Databricks workspace
-      workspaceResourceId: databricks001Id
-    }
-  }
-}
+// resource datafactoryDatabricksLinkedService 'Microsoft.DataFactory/factories/linkedservices@2018-06-01' = {
+//   parent: datafactory
+//   name: replace(databricks001Name, '-', '')
+//   properties: {
+//     type: 'AzureDatabricks'
+//     annotations: []
+//     connectVia: {
+//       type: 'IntegrationRuntimeReference'
+//       referenceName: datafactoryManagedIntegrationRuntime001.name
+//       parameters: {}
+//     }
+//     description: 'Azure Databricks Compute for Data Engineering'
+//     parameters: {
+//       DatabricksClusterType: {
+//         type: 'String'
+//         defaultValue: 'Standard_DS3_v2'
+//       }
+//       DatabricksAutoscale: {
+//         type: 'String'
+//         defaultValue: '1:15'
+//       }
+//       DatabrickClusterVersion: {
+//         type: 'String'
+//         defaultValue: '7.3.x-scala2.12'
+//       }
+//     }
+//     typeProperties: {
+//       authentication: 'MSI'
+//       domain: 'https://${databricks001WorkspaceUrl}'
+//       newClusterCustomTags: {
+//         costCenter: 'ABCDE-12345'
+//       }
+//       newClusterDriverNodeType: '@linkedService().DatabricksClusterType'
+//       newClusterNodeType: '@linkedService().DatabricksClusterType'
+//       newClusterNumOfWorker: '@linkedService().DatabricksAutoscale'
+//       newClusterSparkEnvVars: {
+//         PYSPARK_PYTHON: '/databricks/python3/bin/python3'
+//       }
+//       newClusterVersion: '@linkedService().DatabrickClusterVersion'
+//       // policyId: ''  // Uncomment to set the default cluster policy ID for jobs running on the Databricks workspace
+//       workspaceResourceId: databricks001Id
+//     }
+//   }
+// }
 
 // Outputs
 output datafactoryId string = datafactory.id

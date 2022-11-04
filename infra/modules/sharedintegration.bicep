@@ -11,9 +11,9 @@ param prefix string
 param tags object
 param storageAccountRawFileSystemId string
 param storageAccountEnrichedCuratedFileSystemId string
-param vnetId string
-param databricksIntegration001PrivateSubnetName string
-param databricksIntegration001PublicSubnetName string
+// param vnetId string
+// param databricksIntegration001PrivateSubnetName string
+// param databricksIntegration001PublicSubnetName string
 param subnetId string
 param purviewId string = ''
 param purviewManagedStorageId string = ''
@@ -28,7 +28,7 @@ param privateDnsZoneIdDataFactoryPortal string = ''
 param privateDnsZoneIdEventhubNamespace string = ''
 
 // Variables
-var databricksIntegration001Name = '${prefix}-integration-databricks001'
+// var databricksIntegration001Name = '${prefix}-integration-databricks001'
 var eventhubNamespaceIntegration001Name = '${prefix}-integration-eventhub001'
 var datafactoryIntegration001Name = '${prefix}-integration-datafactory001'
 var storageAccountRawSubscriptionId = length(split(storageAccountRawFileSystemId, '/')) >= 13 ? split(storageAccountRawFileSystemId, '/')[2] : subscription().subscriptionId
@@ -36,19 +36,19 @@ var storageAccountRawResourceGroupName = length(split(storageAccountRawFileSyste
 var storageAccountEnrichedCuratedSubscriptionId = length(split(storageAccountEnrichedCuratedFileSystemId, '/')) >= 13 ? split(storageAccountEnrichedCuratedFileSystemId, '/')[2] : subscription().subscriptionId
 var storageAccountEnrichedCuratedResourceGroupName = length(split(storageAccountEnrichedCuratedFileSystemId, '/')) >= 13 ? split(storageAccountEnrichedCuratedFileSystemId, '/')[4] : resourceGroup().name
 
-// Resources
-module databricksIntegration001 'services/databricks.bicep' = {
-  name: 'databricksIntegration001'
-  scope: resourceGroup()
-  params: {
-    location: location
-    tags: tags
-    databricksName: databricksIntegration001Name
-    vnetId: vnetId
-    privateSubnetName: databricksIntegration001PrivateSubnetName
-    publicSubnetName: databricksIntegration001PublicSubnetName
-  }
-}
+// // Resources
+// module databricksIntegration001 'services/databricks.bicep' = {
+//   name: 'databricksIntegration001'
+//   scope: resourceGroup()
+//   params: {
+//     location: location
+//     tags: tags
+//     databricksName: databricksIntegration001Name
+//     vnetId: vnetId
+//     privateSubnetName: databricksIntegration001PrivateSubnetName
+//     publicSubnetName: databricksIntegration001PublicSubnetName
+//   }
+// }
 
 module eventhubNamespaceIntegration001 'services/eventhubnamespace.bicep' = {
   name: 'eventhubNamespaceIntegration001'
@@ -79,8 +79,8 @@ module datafactoryIntegration001 'services/datafactorysharedintegration.bicep' =
     purviewManagedEventHubId: purviewManagedEventHubId
     storageRawId: storageRawId
     storageEnrichedCuratedId: storageEnrichedCuratedId
-    databricks001Id: databricksIntegration001.outputs.databricksId
-    databricks001WorkspaceUrl: databricksIntegration001.outputs.databricksWorkspaceUrl
+    // databricks001Id: databricksIntegration001.outputs.databricksId
+    // databricks001WorkspaceUrl: databricksIntegration001.outputs.databricksWorkspaceUrl
     keyVault001Id: keyVault001Id
     sqlServer001Id: sqlServer001Id
     sqlDatabase001Name: sqlDatabase001Name
@@ -105,16 +105,16 @@ module datafactory001StorageEnrichedCuratedRoleAssignment 'auxiliary/dataFactory
   }
 }
 
-module datafactory001DatabricksRoleAssignment 'auxiliary/dataFactoryRoleAssignmentDatabricks.bicep' = {
-  name: 'datafactory001DatabricksRoleAssignment'
-  scope: resourceGroup()
-  params: {
-    datafactoryId: datafactoryIntegration001.outputs.datafactoryId
-    databricksId: databricksIntegration001.outputs.databricksId
-  }
-}
+// module datafactory001DatabricksRoleAssignment 'auxiliary/dataFactoryRoleAssignmentDatabricks.bicep' = {
+//   name: 'datafactory001DatabricksRoleAssignment'
+//   scope: resourceGroup()
+//   params: {
+//     datafactoryId: datafactoryIntegration001.outputs.datafactoryId
+//     databricksId: databricksIntegration001.outputs.databricksId
+//   }
+// }
 
 // Outputs
 output datafactoryIntegration001Id string = datafactoryIntegration001.outputs.datafactoryId
-output databricksIntegration001Id string = databricksIntegration001.outputs.databricksId
-output databricksIntegration001ApiUrl string = databricksIntegration001.outputs.databricksApiUrl
+// output databricksIntegration001Id string = databricksIntegration001.outputs.databricksId
+// output databricksIntegration001ApiUrl string = databricksIntegration001.outputs.databricksApiUrl

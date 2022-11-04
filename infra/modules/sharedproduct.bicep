@@ -18,31 +18,31 @@ param synapseProduct001DefaultStorageAccountFileSystemId string
 param synapseProduct001ComputeSubnetId string = ''
 param privateDnsZoneIdSynapseSql string = ''
 param privateDnsZoneIdSynapseDev string = ''
-param vnetId string
-param databricksProduct001PrivateSubnetName string
-param databricksProduct001PublicSubnetName string
+// param vnetId string
+// param databricksProduct001PrivateSubnetName string
+// param databricksProduct001PublicSubnetName string
 param subnetId string
 param purviewId string = ''
 
 // Variables
 var synapseProduct001DefaultStorageAccountSubscriptionId = length(split(synapseProduct001DefaultStorageAccountFileSystemId, '/')) >= 13 ? split(synapseProduct001DefaultStorageAccountFileSystemId, '/')[2] : subscription().subscriptionId
 var synapseProduct001DefaultStorageAccountResourceGroupName = length(split(synapseProduct001DefaultStorageAccountFileSystemId, '/')) >= 13 ? split(synapseProduct001DefaultStorageAccountFileSystemId, '/')[4] : resourceGroup().name
-var databricksProduct001Name = '${prefix}-product-databricks001'
+// var databricksProduct001Name = '${prefix}-product-databricks001'
 var synapseProduct001Name = '${prefix}-product-synapse001'
 
-// Resources
-module databricksProduct001 'services/databricks.bicep' = {
-  name: 'databricksProduct001'
-  scope: resourceGroup()
-  params: {
-    location: location
-    tags: tags
-    databricksName: databricksProduct001Name
-    privateSubnetName: databricksProduct001PrivateSubnetName
-    publicSubnetName: databricksProduct001PublicSubnetName
-    vnetId: vnetId
-  }
-}
+// // Resources
+// module databricksProduct001 'services/databricks.bicep' = {
+//   name: 'databricksProduct001'
+//   scope: resourceGroup()
+//   params: {
+//     location: location
+//     tags: tags
+//     databricksName: databricksProduct001Name
+//     privateSubnetName: databricksProduct001PrivateSubnetName
+//     publicSubnetName: databricksProduct001PublicSubnetName
+//     vnetId: vnetId
+//   }
+// }
 
 module synapseProduct001 'services/synapse.bicep' = {
   name: 'synapseProduct001'
@@ -74,5 +74,5 @@ module synapse001StorageRoleAssignment 'auxiliary/synapseRoleAssignmentStorage.b
 }
 
 // Outputs
-output databricksProduct001Id string = databricksProduct001.outputs.databricksId
-output databricksProduct001ApiUrl string = databricksProduct001.outputs.databricksApiUrl
+// output databricksProduct001Id string = databricksProduct001.outputs.databricksId
+// output databricksProduct001ApiUrl string = databricksProduct001.outputs.databricksApiUrl

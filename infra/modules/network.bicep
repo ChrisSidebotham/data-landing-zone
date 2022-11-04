@@ -15,10 +15,10 @@ param dnsServerAdresses array = [
 ]
 param vnetAddressPrefix string = '10.1.0.0/16'
 param servicesSubnetAddressPrefix string = '10.1.0.0/24'
-param databricksIntegrationPublicSubnetAddressPrefix string = '10.1.1.0/24'
-param databricksIntegrationPrivateSubnetAddressPrefix string = '10.1.2.0/24'
-param databricksProductPublicSubnetAddressPrefix string = '10.1.3.0/24'
-param databricksProductPrivateSubnetAddressPrefix string = '10.1.4.0/24'
+// param databricksIntegrationPublicSubnetAddressPrefix string = '10.1.1.0/24'
+// param databricksIntegrationPrivateSubnetAddressPrefix string = '10.1.2.0/24'
+// param databricksProductPublicSubnetAddressPrefix string = '10.1.3.0/24'
+// param databricksProductPrivateSubnetAddressPrefix string = '10.1.4.0/24'
 param powerBiGatewaySubnetAddressPrefix string = '10.1.5.0/24'
 param dataIntegration001SubnetAddressPrefix string = '10.1.6.0/24'
 param dataIntegration002SubnetAddressPrefix string = '10.1.7.0/24'
@@ -28,10 +28,10 @@ param dataManagementZoneVnetId string = ''
 
 // Variables
 var servicesSubnetName = 'ServicesSubnet'
-var databricksIntegrationPrivateSubnetName = 'DatabricksIntegrationSubnetPrivate'
-var databricksIntegrationPublicSubnetName = 'DatabricksIntegrationSubnetPublic'
-var databricksProductPrivateSubnetName = 'DatabricksProductSubnetPrivate'
-var databricksProductPublicSubnetName = 'DatabricksProductSubnetPublic'
+// var databricksIntegrationPrivateSubnetName = 'DatabricksIntegrationSubnetPrivate'
+// var databricksIntegrationPublicSubnetName = 'DatabricksIntegrationSubnetPublic'
+// var databricksProductPrivateSubnetName = 'DatabricksProductSubnetPrivate'
+// var databricksProductPublicSubnetName = 'DatabricksProductSubnetPublic'
 var powerBiGatewaySubnetName = 'PowerBIGatewaySubnet'
 var dataIntegration001SubnetName = 'DataIntegration001Subnet'
 var dataIntegration002SubnetName = 'DataIntegration002Subnet'
@@ -70,123 +70,123 @@ resource nsg 'Microsoft.Network/networkSecurityGroups@2020-11-01' = {
   }
 }
 
-resource databricksNsg 'Microsoft.Network/networkSecurityGroups@2020-11-01' = {
-  name: '${prefix}-databricks-nsg'
-  location: location
-  tags: tags
-  properties: {
-    securityRules: [
-      {
-        name: 'Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-worker-inbound'
-        properties: {
-          description: 'Required for worker nodes communication within a cluster.'
-          protocol: '*'
-          sourcePortRange: '*'
-          destinationPortRange: '*'
-          sourceAddressPrefix: 'VirtualNetwork'
-          destinationAddressPrefix: 'VirtualNetwork'
-          access: 'Allow'
-          priority: 100
-          direction: 'Inbound'
-          sourcePortRanges: []
-          destinationPortRanges: []
-          sourceAddressPrefixes: []
-          destinationAddressPrefixes: []
-        }
-      }
-      {
-        name: 'Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-worker-outbound'
-        properties: {
-          description: 'Required for worker nodes communication within a cluster.'
-          protocol: '*'
-          sourcePortRange: '*'
-          destinationPortRange: '*'
-          sourceAddressPrefix: 'VirtualNetwork'
-          destinationAddressPrefix: 'VirtualNetwork'
-          access: 'Allow'
-          priority: 101
-          direction: 'Outbound'
-          sourcePortRanges: []
-          destinationPortRanges: []
-          sourceAddressPrefixes: []
-          destinationAddressPrefixes: []
-        }
-      }
-      {
-        name: 'Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-sql'
-        properties: {
-          description: 'Required for workers communication with Azure SQL services.'
-          protocol: 'Tcp'
-          sourcePortRange: '*'
-          destinationPortRange: '3306'
-          sourceAddressPrefix: 'VirtualNetwork'
-          destinationAddressPrefix: 'Sql'
-          access: 'Allow'
-          priority: 102
-          direction: 'Outbound'
-          sourcePortRanges: []
-          destinationPortRanges: []
-          sourceAddressPrefixes: []
-          destinationAddressPrefixes: []
-        }
-      }
-      {
-        name: 'Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-storage'
-        properties: {
-          description: 'Required for workers communication with Azure Storage services.'
-          protocol: 'Tcp'
-          sourcePortRange: '*'
-          destinationPortRange: '443'
-          sourceAddressPrefix: 'VirtualNetwork'
-          destinationAddressPrefix: 'Storage'
-          access: 'Allow'
-          priority: 103
-          direction: 'Outbound'
-          sourcePortRanges: []
-          destinationPortRanges: []
-          sourceAddressPrefixes: []
-          destinationAddressPrefixes: []
-        }
-      }
-      {
-        name: 'Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-eventhub'
-        properties: {
-          description: 'Required for worker communication with Azure Eventhub services.'
-          protocol: 'Tcp'
-          sourcePortRange: '*'
-          destinationPortRange: '9093'
-          sourceAddressPrefix: 'VirtualNetwork'
-          destinationAddressPrefix: 'EventHub'
-          access: 'Allow'
-          priority: 104
-          direction: 'Outbound'
-          sourcePortRanges: []
-          destinationPortRanges: []
-          sourceAddressPrefixes: []
-          destinationAddressPrefixes: []
-        }
-      }
-      {
-        name: 'Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-databricks-webapp'
-        properties: {
-          description: 'Required for workers communication with Databricks Webapp.'
-          protocol: 'Tcp'
-          sourcePortRange: '*'
-          destinationPortRange: '443'
-          sourceAddressPrefix: 'VirtualNetwork'
-          destinationAddressPrefix: 'AzureDatabricks'
-          access: 'Allow'
-          priority: 100
-          direction: 'Outbound'
-          sourcePortRanges: []
-          destinationPortRanges: []
-          sourceAddressPrefixes: []
-          destinationAddressPrefixes: []
-        }
-      }
-    ]
-  }
-}
+// resource databricksNsg 'Microsoft.Network/networkSecurityGroups@2020-11-01' = {
+//   name: '${prefix}-databricks-nsg'
+//   location: location
+//   tags: tags
+//   properties: {
+//     securityRules: [
+//       {
+//         name: 'Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-worker-inbound'
+//         properties: {
+//           description: 'Required for worker nodes communication within a cluster.'
+//           protocol: '*'
+//           sourcePortRange: '*'
+//           destinationPortRange: '*'
+//           sourceAddressPrefix: 'VirtualNetwork'
+//           destinationAddressPrefix: 'VirtualNetwork'
+//           access: 'Allow'
+//           priority: 100
+//           direction: 'Inbound'
+//           sourcePortRanges: []
+//           destinationPortRanges: []
+//           sourceAddressPrefixes: []
+//           destinationAddressPrefixes: []
+//         }
+//       }
+//       {
+//         name: 'Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-worker-outbound'
+//         properties: {
+//           description: 'Required for worker nodes communication within a cluster.'
+//           protocol: '*'
+//           sourcePortRange: '*'
+//           destinationPortRange: '*'
+//           sourceAddressPrefix: 'VirtualNetwork'
+//           destinationAddressPrefix: 'VirtualNetwork'
+//           access: 'Allow'
+//           priority: 101
+//           direction: 'Outbound'
+//           sourcePortRanges: []
+//           destinationPortRanges: []
+//           sourceAddressPrefixes: []
+//           destinationAddressPrefixes: []
+//         }
+//       }
+//       {
+//         name: 'Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-sql'
+//         properties: {
+//           description: 'Required for workers communication with Azure SQL services.'
+//           protocol: 'Tcp'
+//           sourcePortRange: '*'
+//           destinationPortRange: '3306'
+//           sourceAddressPrefix: 'VirtualNetwork'
+//           destinationAddressPrefix: 'Sql'
+//           access: 'Allow'
+//           priority: 102
+//           direction: 'Outbound'
+//           sourcePortRanges: []
+//           destinationPortRanges: []
+//           sourceAddressPrefixes: []
+//           destinationAddressPrefixes: []
+//         }
+//       }
+//       {
+//         name: 'Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-storage'
+//         properties: {
+//           description: 'Required for workers communication with Azure Storage services.'
+//           protocol: 'Tcp'
+//           sourcePortRange: '*'
+//           destinationPortRange: '443'
+//           sourceAddressPrefix: 'VirtualNetwork'
+//           destinationAddressPrefix: 'Storage'
+//           access: 'Allow'
+//           priority: 103
+//           direction: 'Outbound'
+//           sourcePortRanges: []
+//           destinationPortRanges: []
+//           sourceAddressPrefixes: []
+//           destinationAddressPrefixes: []
+//         }
+//       }
+//       {
+//         name: 'Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-eventhub'
+//         properties: {
+//           description: 'Required for worker communication with Azure Eventhub services.'
+//           protocol: 'Tcp'
+//           sourcePortRange: '*'
+//           destinationPortRange: '9093'
+//           sourceAddressPrefix: 'VirtualNetwork'
+//           destinationAddressPrefix: 'EventHub'
+//           access: 'Allow'
+//           priority: 104
+//           direction: 'Outbound'
+//           sourcePortRanges: []
+//           destinationPortRanges: []
+//           sourceAddressPrefixes: []
+//           destinationAddressPrefixes: []
+//         }
+//       }
+//       {
+//         name: 'Microsoft.Databricks-workspaces_UseOnly_databricks-worker-to-databricks-webapp'
+//         properties: {
+//           description: 'Required for workers communication with Databricks Webapp.'
+//           protocol: 'Tcp'
+//           sourcePortRange: '*'
+//           destinationPortRange: '443'
+//           sourceAddressPrefix: 'VirtualNetwork'
+//           destinationAddressPrefix: 'AzureDatabricks'
+//           access: 'Allow'
+//           priority: 100
+//           direction: 'Outbound'
+//           sourcePortRanges: []
+//           destinationPortRanges: []
+//           sourceAddressPrefixes: []
+//           destinationAddressPrefixes: []
+//         }
+//       }
+//     ]
+//   }
+// }
 
 resource amlNsg 'Microsoft.Network/networkSecurityGroups@2020-11-01' = {
   name: '${prefix}-aml-nsg'
@@ -267,106 +267,106 @@ resource vnet 'Microsoft.Network/virtualNetworks@2020-06-01' = {
           serviceEndpoints: []
         }
       }
-      {
-        name: databricksIntegrationPublicSubnetName
-        properties: {
-          addressPrefix: databricksIntegrationPublicSubnetAddressPrefix
-          addressPrefixes: []
-          networkSecurityGroup: {
-            id: databricksNsg.id
-          }
-          routeTable: {
-            id: routeTable.id
-          }
-          delegations: [
-            {
-              name: 'DatabricksSubnetDelegation'
-              properties: {
-                serviceName: 'Microsoft.Databricks/workspaces'
-              }
-            }
-          ]
-          privateEndpointNetworkPolicies: 'Enabled'
-          privateLinkServiceNetworkPolicies: 'Enabled'
-          serviceEndpointPolicies: []
-          serviceEndpoints: []
-        }
-      }
-      {
-        name: databricksIntegrationPrivateSubnetName
-        properties: {
-          addressPrefix: databricksIntegrationPrivateSubnetAddressPrefix
-          addressPrefixes: []
-          networkSecurityGroup: {
-            id: databricksNsg.id
-          }
-          routeTable: {
-            id: routeTable.id
-          }
-          delegations: [
-            {
-              name: 'DatabricksSubnetDelegation'
-              properties: {
-                serviceName: 'Microsoft.Databricks/workspaces'
-              }
-            }
-          ]
-          privateEndpointNetworkPolicies: 'Enabled'
-          privateLinkServiceNetworkPolicies: 'Enabled'
-          serviceEndpointPolicies: []
-          serviceEndpoints: []
-        }
-      }
-      {
-        name: databricksProductPublicSubnetName
-        properties: {
-          addressPrefix: databricksProductPublicSubnetAddressPrefix
-          addressPrefixes: []
-          networkSecurityGroup: {
-            id: databricksNsg.id
-          }
-          routeTable: {
-            id: routeTable.id
-          }
-          delegations: [
-            {
-              name: 'DatabricksSubnetDelegation'
-              properties: {
-                serviceName: 'Microsoft.Databricks/workspaces'
-              }
-            }
-          ]
-          privateEndpointNetworkPolicies: 'Enabled'
-          privateLinkServiceNetworkPolicies: 'Enabled'
-          serviceEndpointPolicies: []
-          serviceEndpoints: []
-        }
-      }
-      {
-        name: databricksProductPrivateSubnetName
-        properties: {
-          addressPrefix: databricksProductPrivateSubnetAddressPrefix
-          addressPrefixes: []
-          networkSecurityGroup: {
-            id: databricksNsg.id
-          }
-          routeTable: {
-            id: routeTable.id
-          }
-          delegations: [
-            {
-              name: 'DatabricksSubnetDelegation'
-              properties: {
-                serviceName: 'Microsoft.Databricks/workspaces'
-              }
-            }
-          ]
-          privateEndpointNetworkPolicies: 'Enabled'
-          privateLinkServiceNetworkPolicies: 'Enabled'
-          serviceEndpointPolicies: []
-          serviceEndpoints: []
-        }
-      }
+      // {
+      //   name: databricksIntegrationPublicSubnetName
+      //   properties: {
+      //     addressPrefix: databricksIntegrationPublicSubnetAddressPrefix
+      //     addressPrefixes: []
+      //     networkSecurityGroup: {
+      //       id: databricksNsg.id
+      //     }
+      //     routeTable: {
+      //       id: routeTable.id
+      //     }
+      //     delegations: [
+      //       {
+      //         name: 'DatabricksSubnetDelegation'
+      //         properties: {
+      //           serviceName: 'Microsoft.Databricks/workspaces'
+      //         }
+      //       }
+      //     ]
+      //     privateEndpointNetworkPolicies: 'Enabled'
+      //     privateLinkServiceNetworkPolicies: 'Enabled'
+      //     serviceEndpointPolicies: []
+      //     serviceEndpoints: []
+      //   }
+      // }
+      // {
+      //   name: databricksIntegrationPrivateSubnetName
+      //   properties: {
+      //     addressPrefix: databricksIntegrationPrivateSubnetAddressPrefix
+      //     addressPrefixes: []
+      //     networkSecurityGroup: {
+      //       id: databricksNsg.id
+      //     }
+      //     routeTable: {
+      //       id: routeTable.id
+      //     }
+      //     delegations: [
+      //       {
+      //         name: 'DatabricksSubnetDelegation'
+      //         properties: {
+      //           serviceName: 'Microsoft.Databricks/workspaces'
+      //         }
+      //       }
+      //     ]
+      //     privateEndpointNetworkPolicies: 'Enabled'
+      //     privateLinkServiceNetworkPolicies: 'Enabled'
+      //     serviceEndpointPolicies: []
+      //     serviceEndpoints: []
+      //   }
+      // }
+      // {
+      //   name: databricksProductPublicSubnetName
+      //   properties: {
+      //     addressPrefix: databricksProductPublicSubnetAddressPrefix
+      //     addressPrefixes: []
+      //     networkSecurityGroup: {
+      //       id: databricksNsg.id
+      //     }
+      //     routeTable: {
+      //       id: routeTable.id
+      //     }
+      //     delegations: [
+      //       {
+      //         name: 'DatabricksSubnetDelegation'
+      //         properties: {
+      //           serviceName: 'Microsoft.Databricks/workspaces'
+      //         }
+      //       }
+      //     ]
+      //     privateEndpointNetworkPolicies: 'Enabled'
+      //     privateLinkServiceNetworkPolicies: 'Enabled'
+      //     serviceEndpointPolicies: []
+      //     serviceEndpoints: []
+      //   }
+      // }
+      // {
+      //   name: databricksProductPrivateSubnetName
+      //   properties: {
+      //     addressPrefix: databricksProductPrivateSubnetAddressPrefix
+      //     addressPrefixes: []
+      //     networkSecurityGroup: {
+      //       id: databricksNsg.id
+      //     }
+      //     routeTable: {
+      //       id: routeTable.id
+      //     }
+      //     delegations: [
+      //       {
+      //         name: 'DatabricksSubnetDelegation'
+      //         properties: {
+      //           serviceName: 'Microsoft.Databricks/workspaces'
+      //         }
+      //       }
+      //     ]
+      //     privateEndpointNetworkPolicies: 'Enabled'
+      //     privateLinkServiceNetworkPolicies: 'Enabled'
+      //     serviceEndpointPolicies: []
+      //     serviceEndpoints: []
+      //   }
+      // }
       {
         name: powerBiGatewaySubnetName
         properties: {
@@ -497,7 +497,7 @@ output vnetId string = vnet.id
 output nsgId string = nsg.id
 output routeTableId string = routeTable.id
 output servicesSubnetId string = vnet.properties.subnets[0].id
-output databricksIntegrationPublicSubnetName string = databricksIntegrationPublicSubnetName
-output databricksIntegrationPrivateSubnetName string = databricksIntegrationPrivateSubnetName
-output databricksProductPublicSubnetName string = databricksProductPublicSubnetName
-output databricksProductPrivateSubnetName string = databricksProductPrivateSubnetName
+// output databricksIntegrationPublicSubnetName string = databricksIntegrationPublicSubnetName
+// output databricksIntegrationPrivateSubnetName string = databricksIntegrationPrivateSubnetName
+// output databricksProductPublicSubnetName string = databricksProductPublicSubnetName
+// output databricksProductPrivateSubnetName string = databricksProductPrivateSubnetName

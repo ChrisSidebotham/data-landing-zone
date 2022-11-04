@@ -19,16 +19,16 @@ param storageRawId string
 param storageEnrichedCuratedId string
 // param databricks001Id string
 // param databricks001WorkspaceUrl string
-param keyVault001Id string
-param sqlServer001Id string
-param sqlDatabase001Name string
+// param keyVault001Id string
+// param sqlServer001Id string
+// param sqlDatabase001Name string
 
 // Variables
 var storageRawName = length(split(storageRawId, '/')) >= 9 ? last(split(storageRawId, '/')) : 'incorrectSegmentLength'
 var storageEnrichedCuratedName = length(split(storageEnrichedCuratedId, '/')) >= 9 ? last(split(storageEnrichedCuratedId, '/')) : 'incorrectSegmentLength'
 // var databricks001Name = length(split(databricks001Id, '/')) >= 9 ? last(split(databricks001Id, '/')) : 'incorrectSegmentLength'
-var keyVault001Name = length(split(keyVault001Id, '/')) >= 9 ? last(split(keyVault001Id, '/')) : 'incorrectSegmentLength'
-var sqlServer001Name = length(split(sqlServer001Id, '/')) >= 9 ? last(split(sqlServer001Id, '/')) : 'incorrectSegmentLength'
+// var keyVault001Name = length(split(keyVault001Id, '/')) >= 9 ? last(split(keyVault001Id, '/')) : 'incorrectSegmentLength'
+// var sqlServer001Name = length(split(sqlServer001Id, '/')) >= 9 ? last(split(sqlServer001Id, '/')) : 'incorrectSegmentLength'
 var datafactoryDefaultManagedVnetIntegrationRuntimeName = 'AutoResolveIntegrationRuntime'
 var datafactoryPrivateEndpointNameDatafactory = '${datafactory.name}-datafactory-private-endpoint'
 var datafactoryPrivateEndpointNamePortal = '${datafactory.name}-portal-private-endpoint'
@@ -192,69 +192,69 @@ resource datafactoryPurviewNamespaceManagedPrivateEndpoint 'Microsoft.DataFactor
   }
 }
 
-resource datafactoryKeyVault001ManagedPrivateEndpoint 'Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints@2018-06-01' = {
-  parent: datafactoryManagedVirtualNetwork
-  name: replace(keyVault001Name, '-', '')
-  properties: {
-    fqdns: []
-    groupId: 'vault'
-    privateLinkResourceId: keyVault001Id
-  }
-}
+// resource datafactoryKeyVault001ManagedPrivateEndpoint 'Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints@2018-06-01' = {
+//   parent: datafactoryManagedVirtualNetwork
+//   name: replace(keyVault001Name, '-', '')
+//   properties: {
+//     fqdns: []
+//     groupId: 'vault'
+//     privateLinkResourceId: keyVault001Id
+//   }
+// }
 
-resource datafactoryKeyVault001LinkedService 'Microsoft.DataFactory/factories/linkedservices@2018-06-01' = {
-  parent: datafactory
-  name: replace(keyVault001Name, '-', '')
-  dependsOn: [
-    datafactoryKeyVault001ManagedPrivateEndpoint
-  ]
-  properties: {
-    type: 'AzureKeyVault'
-    annotations: []
-    connectVia: {
-      type: 'IntegrationRuntimeReference'
-      referenceName: datafactoryManagedIntegrationRuntime001.name
-      parameters: {}
-    }
-    description: 'Key Vault for storing secrets'
-    parameters: {}
-    typeProperties: {
-      baseUrl: 'https://${keyVault001Name}${environment().suffixes.keyvaultDns}/'
-    }
-  }
-}
+// resource datafactoryKeyVault001LinkedService 'Microsoft.DataFactory/factories/linkedservices@2018-06-01' = {
+//   parent: datafactory
+//   name: replace(keyVault001Name, '-', '')
+//   dependsOn: [
+//     datafactoryKeyVault001ManagedPrivateEndpoint
+//   ]
+//   properties: {
+//     type: 'AzureKeyVault'
+//     annotations: []
+//     connectVia: {
+//       type: 'IntegrationRuntimeReference'
+//       referenceName: datafactoryManagedIntegrationRuntime001.name
+//       parameters: {}
+//     }
+//     description: 'Key Vault for storing secrets'
+//     parameters: {}
+//     typeProperties: {
+//       baseUrl: 'https://${keyVault001Name}${environment().suffixes.keyvaultDns}/'
+//     }
+//   }
+// }
 
-resource datafactorySqlServer001ManagedPrivateEndpoint 'Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints@2018-06-01' = {
-  parent: datafactoryManagedVirtualNetwork
-  name: replace(sqlServer001Name, '-', '')
-  properties: {
-    fqdns: []
-    groupId: 'sqlServer'
-    privateLinkResourceId: sqlServer001Id
-  }
-}
+// resource datafactorySqlServer001ManagedPrivateEndpoint 'Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints@2018-06-01' = {
+//   parent: datafactoryManagedVirtualNetwork
+//   name: replace(sqlServer001Name, '-', '')
+//   properties: {
+//     fqdns: []
+//     groupId: 'sqlServer'
+//     privateLinkResourceId: sqlServer001Id
+//   }
+// }
 
-resource datafactorySqlserver001LinkedService 'Microsoft.DataFactory/factories/linkedservices@2018-06-01' = {
-  parent: datafactory
-  name: '${replace(sqlServer001Name, '-', '')}${replace(sqlDatabase001Name, '-', '')}'
-  dependsOn: [
-    datafactorySqlServer001ManagedPrivateEndpoint
-  ]
-  properties: {
-    type: 'AzureSqlDatabase'
-    annotations: []
-    connectVia: {
-      type: 'IntegrationRuntimeReference'
-      referenceName: datafactoryManagedIntegrationRuntime001.name
-      parameters: {}
-    }
-    description: 'Sql Database for storing metadata'
-    parameters: {}
-    typeProperties: {
-      connectionString: 'Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=${sqlServer001Name}${environment().suffixes.sqlServerHostname};Initial Catalog=${sqlDatabase001Name}'
-    }
-  }
-}
+// resource datafactorySqlserver001LinkedService 'Microsoft.DataFactory/factories/linkedservices@2018-06-01' = {
+//   parent: datafactory
+//   name: '${replace(sqlServer001Name, '-', '')}${replace(sqlDatabase001Name, '-', '')}'
+//   dependsOn: [
+//     datafactorySqlServer001ManagedPrivateEndpoint
+//   ]
+//   properties: {
+//     type: 'AzureSqlDatabase'
+//     annotations: []
+//     connectVia: {
+//       type: 'IntegrationRuntimeReference'
+//       referenceName: datafactoryManagedIntegrationRuntime001.name
+//       parameters: {}
+//     }
+//     description: 'Sql Database for storing metadata'
+//     parameters: {}
+//     typeProperties: {
+//       connectionString: 'Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=${sqlServer001Name}${environment().suffixes.sqlServerHostname};Initial Catalog=${sqlDatabase001Name}'
+//     }
+//   }
+// }
 
 resource datafactoryStorageRawManagedPrivateEndpoint 'Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints@2018-06-01' = {
   parent: datafactoryManagedVirtualNetwork

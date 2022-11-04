@@ -20,9 +20,9 @@ param purviewManagedStorageId string = ''
 param purviewManagedEventHubId string = ''
 param storageRawId string
 param storageEnrichedCuratedId string
-param keyVault001Id string
-param sqlServer001Id string
-param sqlDatabase001Name string
+// param keyVault001Id string
+// param sqlServer001Id string
+// param sqlDatabase001Name string
 param privateDnsZoneIdDataFactory string = ''
 param privateDnsZoneIdDataFactoryPortal string = ''
 param privateDnsZoneIdEventhubNamespace string = ''
@@ -81,9 +81,9 @@ module datafactoryIntegration001 'services/datafactorysharedintegration.bicep' =
     storageEnrichedCuratedId: storageEnrichedCuratedId
     // databricks001Id: databricksIntegration001.outputs.databricksId
     // databricks001WorkspaceUrl: databricksIntegration001.outputs.databricksWorkspaceUrl
-    keyVault001Id: keyVault001Id
-    sqlServer001Id: sqlServer001Id
-    sqlDatabase001Name: sqlDatabase001Name
+    // keyVault001Id: keyVault001Id
+    // sqlServer001Id: sqlServer001Id
+    // sqlDatabase001Name: sqlDatabase001Name
   }
 }
 

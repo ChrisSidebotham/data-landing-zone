@@ -167,14 +167,16 @@ module loggingServices 'modules/logging.bicep' = {
 }
 
 // Runtime resources
-resource runtimesResourceGroup 'Microsoft.Resources/resourceGroups@2021-01-01' = {
+param deploySharedIntegrationRuntime bool = false
+
+resource runtimesResourceGroup 'Microsoft.Resources/resourceGroups@2021-01-01' = if (deploySelfHostedIntegrationRuntimes) { 
   name: '${name}-runtimes'
   location: location
   tags: tagsJoined
   properties: {}
 }
 
-module runtimeServices 'modules/runtimes.bicep' = {
+module runtimeServices 'modules/runtimes.bicep' = if (deploySelfHostedIntegrationRuntimes) {
   name: 'runtimeServices'
   scope: runtimesResourceGroup
   params: {
@@ -240,33 +242,33 @@ module externalStorageServices 'modules/externalstorage.bicep' = {
   }
 }
 
-// Metadata resources
-resource metadataResourceGroup 'Microsoft.Resources/resourceGroups@2021-01-01' = {
-  name: '${name}-metadata'
-  location: location
-  tags: tagsJoined
-  properties: {}
-}
+// // Metadata resources
+// resource metadataResourceGroup 'Microsoft.Resources/resourceGroups@2021-01-01' = {
+//   name: '${name}-metadata'
+//   location: location
+//   tags: tagsJoined
+//   properties: {}
+// }
 
-module metadataServices 'modules/metadata.bicep' = {
-  name: 'metadataServices'
-  scope: metadataResourceGroup
-  params: {
-    location: location
-    prefix: name
-    tags: tagsJoined
-    subnetId: networkServices.outputs.servicesSubnetId
-    administratorUsername: administratorUsername
-    administratorPassword: administratorPassword
-    sqlserverAdminGroupName: ''
-    sqlserverAdminGroupObjectID: ''
-    mysqlserverAdminGroupName: ''
-    mysqlserverAdminGroupObjectID: ''
-    privateDnsZoneIdKeyVault: privateDnsZoneIdKeyVault
-    privateDnsZoneIdSqlServer: privateDnsZoneIdSqlServer
-    privateDnsZoneIdMySqlServer: privateDnsZoneIdMySqlServer
-  }
-}
+// module metadataServices 'modules/metadata.bicep' = {
+//   name: 'metadataServices'
+//   scope: metadataResourceGroup
+//   params: {
+//     location: location
+//     prefix: name
+//     tags: tagsJoined
+//     subnetId: networkServices.outputs.servicesSubnetId
+//     administratorUsername: administratorUsername
+//     administratorPassword: administratorPassword
+//     sqlserverAdminGroupName: ''
+//     sqlserverAdminGroupObjectID: ''
+//     mysqlserverAdminGroupName: ''
+//     mysqlserverAdminGroupObjectID: ''
+//     privateDnsZoneIdKeyVault: privateDnsZoneIdKeyVault
+//     privateDnsZoneIdSqlServer: privateDnsZoneIdSqlServer
+//     privateDnsZoneIdMySqlServer: privateDnsZoneIdMySqlServer
+//   }
+// }
 
 // Shared integration services
 resource sharedIntegrationResourceGroup 'Microsoft.Resources/resourceGroups@2021-01-01' = {
@@ -291,9 +293,9 @@ module sharedIntegrationServices 'modules/sharedintegration.bicep' = {
     storageAccountRawFileSystemId: storageServices.outputs.storageRawFileSystemId
     storageEnrichedCuratedId: storageServices.outputs.storageEnrichedCuratedId
     storageAccountEnrichedCuratedFileSystemId: storageServices.outputs.storageEnrichedCuratedFileSystemId
-    keyVault001Id: metadataServices.outputs.keyVault001Id
-    sqlServer001Id: metadataServices.outputs.sqlServer001Id
-    sqlDatabase001Name: metadataServices.outputs.sqlServer001DatabaseName
+    // keyVault001Id: metadataServices.outputs.keyVault001Id
+    // sqlServer001Id: metadataServices.outputs.sqlServer001Id
+    // sqlDatabase001Name: metadataServices.outputs.sqlServer001DatabaseName
     purviewId: purviewId
     purviewManagedStorageId: purviewManagedStorageId
     purviewManagedEventHubId: purviewManagedEventHubId
@@ -387,14 +389,14 @@ module purviewSubscriptionRoleAssignmentStorageBlobReader 'modules/auxiliary/pur
 output vnetId string = networkServices.outputs.vnetId
 output nsgId string = networkServices.outputs.nsgId
 output routeTableId string = networkServices.outputs.routeTableId
-output mySqlServer001SubscriptionId string = split(metadataServices.outputs.mySqlServer001Id, '/')[2]
-output mySqlServer001ResourceGroupName string = split(metadataServices.outputs.mySqlServer001Id, '/')[4]
-output mySqlServer001Name string = last(split(metadataServices.outputs.mySqlServer001Id, '/'))
-output mySqlServer001KeyVaultid string = metadataServices.outputs.keyVault001Id
-output mySqlServer001UsernameSecretName string = metadataServices.outputs.mySqlServer001UsernameSecretName
-#disable-next-line outputs-should-not-contain-secrets
-output mySqlServer001PasswordSecretName string = metadataServices.outputs.mySqlServer001PasswordSecretName
-output mySqlServer001ConnectionStringSecretName string = metadataServices.outputs.mySqlServer001ConnectionStringSecretName
+// output mySqlServer001SubscriptionId string = split(metadataServices.outputs.mySqlServer001Id, '/')[2]
+// output mySqlServer001ResourceGroupName string = split(metadataServices.outputs.mySqlServer001Id, '/')[4]
+// output mySqlServer001Name string = last(split(metadataServices.outputs.mySqlServer001Id, '/'))
+// output mySqlServer001KeyVaultid string = metadataServices.outputs.keyVault001Id
+// output mySqlServer001UsernameSecretName string = metadataServices.outputs.mySqlServer001UsernameSecretName
+// #disable-next-line outputs-should-not-contain-secrets
+// output mySqlServer001PasswordSecretName string = metadataServices.outputs.mySqlServer001PasswordSecretName
+// output mySqlServer001ConnectionStringSecretName string = metadataServices.outputs.mySqlServer001ConnectionStringSecretName
 output logAnalyticsWorkspaceKeyVaultId string = loggingServices.outputs.logAnalytics001WorkspaceKeyVaultId
 output logAnalyticsWorkspaceIdSecretName string = loggingServices.outputs.logAnalytics001WorkspaceIdSecretName
 output logAnalyticsWorkspaceKeySecretName string = loggingServices.outputs.logAnalytics001WorkspaceKeySecretName
